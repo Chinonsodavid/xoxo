@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victoria — A Queen Was Born</title>
+  <meta name="description" content="A bespoke cinematic tribute and personal digital love letter from her daughter, Gloria, celebrating Victoria.">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Preload Critical Hero Image -->
+  <link rel="preload" href="assets/images/portrait-hero.jpg" as="image" fetchpriority="high">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Cinematic Preloader Overlay -->
+  <div id="preloader-overlay" class="preloader-overlay" role="dialog" aria-modal="true" aria-label="Loading experience">
+    <div class="preloader-content">
+      <div class="preloader-monogram" aria-hidden="true">V</div>
+      <h2 class="preloader-title">VICTORIA</h2>
+      <p class="preloader-status" id="preloader-status">Curating the memories...</p>
+      <div class="preloader-bar-wrap" aria-hidden="true">
+        <div class="preloader-bar" id="preloader-progress-bar"></div>
+      </div>
+      <span class="preloader-percent" id="preloader-percent">0%</span>
+    </div>
+  </div>
+
+  <!-- Sound Experience Entry Modal -->
+  <div id="sound-modal-overlay" class="sound-modal-overlay" role="dialog" aria-modal="true" aria-label="Sound experience prompt">
+    <div class="sound-modal-card">
+      <div class="sound-modal-emblem" aria-hidden="true">❦</div>
+      <span class="editorial-eyebrow" style="margin-bottom: 0.75rem;">A Digital Tribute</span>
+      <h2 class="sound-modal-title">FOR VICTORIA</h2>
+      <p class="sound-modal-desc">
+        This experience is best enjoyed with music to accompany the journey from Nigeria to the USA.
+      </p>
+      <div class="sound-track-badge">
+        <span class="sound-wave-icon" aria-hidden="true">♫</span>
+        <div class="sound-track-info">
+          <span class="track-title">Because You Loved Me</span>
+          <span class="track-artist">Céline Dion</span>
+        </div>
+      </div>
+      <div class="sound-modal-actions">
+        <button type="button" class="sound-btn-primary" id="btn-sound-play">
+          <span>Begin with Music</span> ♫
+        </button>
+        <button type="button" class="sound-btn-silent" id="btn-sound-mute">
+          Continue Silently
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Ambient Dust Canvas Particles -->
+  <canvas id="ambient-particles" aria-hidden="true"></canvas>
+
+  <!-- Returning Visitor Slim Ribbon -->
+  <aside id="welcome-back-banner" class="welcome-back-bar" role="region" aria-label="Welcome back notification">
+    <div class="welcome-inner">
+      <div class="welcome-left">
+        <span class="welcome-dot" aria-hidden="true"></span>
+        <span class="welcome-text">Welcome back, Victoria. ❤️</span>
+      </div>
+      <div class="welcome-actions">
+        <button type="button" class="welcome-action welcome-action-primary" id="btn-banner-letter">Open Letter ✉</button>
+        <button type="button" class="welcome-action" id="btn-banner-continue">Continue ↓</button>
+        <button type="button" class="welcome-action" id="btn-banner-replay">Replay</button>
+      </div>
+      <button type="button" class="welcome-close" id="btn-banner-close" aria-label="Dismiss notification">✕</button>
+    </div>
+  </aside>
+
+  <!-- Chapter Navigation Progress Indicator (Desktop) -->
+  <nav class="chapter-nav" id="chapter-nav" aria-label="Experience Chapters">
+    <a href="#hero" class="chapter-dot current" data-chapter="01" aria-label="01 Dawn"><span class="chapter-tooltip">01 Dawn</span></a>
+    <a href="#ninth-month" class="chapter-dot" data-chapter="02" aria-label="02 The 9th Month"><span class="chapter-tooltip">02 The 9th Month</span></a>
+    <a href="#woman-you-are" class="chapter-dot" data-chapter="03" aria-label="03 Character"><span class="chapter-tooltip">03 Character</span></a>
+    <a href="#fine-wine" class="chapter-dot" data-chapter="04" aria-label="04 Fine Wine"><span class="chapter-tooltip">04 Fine Wine</span></a>
+    <a href="#little-moments" class="chapter-dot" data-chapter="05" aria-label="05 Memories"><span class="chapter-tooltip">05 Memories</span></a>
+    <a href="#thank-you" class="chapter-dot" data-chapter="06" aria-label="06 Gratitude"><span class="chapter-tooltip">06 Gratitude</span></a>
+    <a href="#miles-apart" class="chapter-dot" data-chapter="07" aria-label="07 Miles Apart"><span class="chapter-tooltip">07 Miles Apart</span></a>
+    <a href="#prayer" class="chapter-dot" data-chapter="08" aria-label="08 The Prayer"><span class="chapter-tooltip">08 The Prayer</span></a>
+    <a href="#letter" class="chapter-dot" data-chapter="09" aria-label="09 The Letter"><span class="chapter-tooltip">09 The Letter</span></a>
+    <a href="#finale" class="chapter-dot" data-chapter="10" aria-label="10 Finale"><span class="chapter-tooltip">10 Finale</span></a>
+  </nav>
+
+  <!-- Floating Audio Player -->
+  <div class="audio-invite" id="audio-invite" role="status">Tap to hear Céline Dion ♫</div>
+  <aside class="audio-controller" id="audio-controller" role="region" aria-label="Audio player">
+    <button type="button" class="audio-btn" id="audio-play-toggle" aria-label="Play or Pause ambient music">
+      <svg id="audio-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="audio-icon-pause" viewBox="0 0 24 24" style="display:none;" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="audio-details">
+      <span class="audio-title">Because You Loved Me</span>
+      <span class="audio-artist">Céline Dion</span>
+    </div>
+    <div class="audio-bars" aria-hidden="true">
+      <span class="audio-bar"></span>
+      <span class="audio-bar"></span>
+      <span class="audio-bar"></span>
+      <span class="audio-bar"></span>
+    </div>
+    <audio id="bg-audio" preload="auto" loop>
+      <source src="assets/audio/celine-dion-because-you-loved-me.mp3" type="audio/mpeg">
+      <source src="assets/audio/turning-page.mp3" type="audio/mpeg">
+    </audio>
+  </aside>
+
+  <main>
+    <!-- =====================================================================
+         ACT 1: THE HERO (THE DAWN)
+         ===================================================================== -->
+    <section id="hero" class="hero-section" aria-label="Hero Introduction">
+      <div class="hero-bg-container" id="hero-bg">
+        <img
+          src="assets/images/portrait-hero.jpg"
+          alt="Victoria in a majestic seated portrait"
+          class="hero-image"
+          fetchpriority="high"
+          loading="eager"
+        >
+        <div class="hero-vignette" aria-hidden="true"></div>
+      </div>
+      <div class="hero-content">
+        <p class="hero-month">SEPTEMBER</p>
+        <h1 class="hero-name">VICTORIA</h1>
+        <p class="hero-subtitle">A queen was born.</p>
+      </div>
+      <div class="hero-scroll-indicator" aria-hidden="true">
+        <span>Scroll to celebrate her</span>
+        <span class="scroll-arrow">↓</span>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 2: THE 9TH MONTH
+         ===================================================================== -->
+    <section id="ninth-month" class="section-container ninth-month-section" aria-labelledby="ninth-month-title">
+      <div class="content-wrapper">
+        <div class="ninth-month-grid">
+          <div class="ninth-month-text">
+            <span class="editorial-eyebrow reveal-fade">Act I — September</span>
+            <h2 id="ninth-month-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">THE 9TH MONTH</h2>
+            <p class="ninth-month-quote-1 reveal-fade stagger-2">
+              “My love for the 9th month of the year knows no bounds because a queen was born.”
+            </p>
+            <p class="ninth-month-quote-2 reveal-fade stagger-3">
+              It’s another trip around the sun, another year to celebrate the beautiful woman you are, and another opportunity for me to thank God for the gift of you.
+            </p>
+          </div>
+
+          <div class="editorial-montage reveal-fade stagger-2" aria-label="Moments of celebration">
+            <div class="image-editorial-frame montage-item-primary">
+              <img
+                src="assets/images/birthday-gift.jpg"
+                alt="Victoria celebrating with birthday flowers and gifts"
+                loading="lazy"
+              >
+              <span class="montage-label">The Birthday Gift</span>
+            </div>
+            <div class="image-editorial-frame montage-item-secondary">
+              <img
+                src="assets/images/fedora-smile.jpg"
+                alt="Victoria in fedora smiling warmly"
+                loading="lazy"
+              >
+              <span class="montage-label">Timeless Joy</span>
+            </div>
+            <div class="image-editorial-frame montage-item-accent">
+              <img
+                src="assets/images/fedora-poised.jpg"
+                alt="Victoria poised and elegant in fedora"
+                loading="lazy"
+              >
+              <span class="montage-label">Poise &amp; Grace</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 3: THE WOMAN YOU ARE (CHARACTER SPREADS)
+         ===================================================================== -->
+    <section id="woman-you-are" class="section-container woman-section" aria-labelledby="woman-title">
+      <div class="content-wrapper">
+        <div class="woman-header">
+          <span class="editorial-eyebrow reveal-fade">Act II — The Essence</span>
+          <h2 id="woman-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">THE WOMAN YOU ARE</h2>
+          <p class="editorial-prose reveal-fade stagger-2" style="margin-top: 1rem;">
+            Four pillars that define the grace, strength, and tenderness of your heart.
+          </p>
+        </div>
+
+        <div class="character-spreads">
+          <!-- Spread 1: SELFLESS -->
+          <article class="spread-item" aria-label="Character quality: Selfless">
+            <div class="spread-text reveal-fade">
+              <div class="spread-number">01</div>
+              <h3 class="spread-word">SELFLESS</h3>
+              <p class="spread-quote">“You gave before you ever asked to receive.”</p>
+              <p class="spread-caption">
+                Every sacrifice made quietly, every burden shouldered with boundless grace. A mother whose generosity has always preceded every expectation.
+              </p>
+            </div>
+            <div class="spread-visual reveal-fade stagger-2">
+              <div class="spread-halo" aria-hidden="true"></div>
+              <div class="image-editorial-frame spread-image-wrapper">
+                <img
+                  src="assets/images/gown-standing.jpg"
+                  alt="Victoria standing regal in an emerald satin gown"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Spread 2: KIND -->
+          <article class="spread-item spread-reversed" aria-label="Character quality: Kind">
+            <div class="spread-text reveal-fade">
+              <div class="spread-number">02</div>
+              <h3 class="spread-word">KIND</h3>
+              <p class="spread-quote">“You make warmth feel effortless.”</p>
+              <p class="spread-caption">
+                In a world that can often be loud and cold, your presence is an immediate sanctuary. Your laughter softens every hardship.
+              </p>
+            </div>
+            <div class="spread-visual reveal-fade stagger-2">
+              <div class="spread-halo" aria-hidden="true"></div>
+              <div class="image-editorial-frame spread-image-wrapper">
+                <img
+                  src="assets/images/floor-warm.jpg"
+                  alt="Victoria in warm intimate candid smiling on the floor"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Spread 3: GRACIOUS -->
+          <article class="spread-item" aria-label="Character quality: Gracious">
+            <div class="spread-text reveal-fade">
+              <div class="spread-number">03</div>
+              <h3 class="spread-word">GRACIOUS</h3>
+              <p class="spread-quote">“There is a quiet elegance in the way you carry yourself.”</p>
+              <p class="spread-caption">
+                Dignity that never needs to announce itself. You move through life with unmatched composure, poise, and quiet majesty.
+              </p>
+            </div>
+            <div class="spread-visual reveal-fade stagger-2">
+              <div class="spread-halo" aria-hidden="true"></div>
+              <div class="image-editorial-frame spread-image-wrapper">
+                <img
+                  src="assets/images/gown-silhouette.jpg"
+                  alt="Victoria in elegant silhouette against architectural arches"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Spread 4: LOVING -->
+          <article class="spread-item spread-reversed" aria-label="Character quality: Loving">
+            <div class="spread-text reveal-fade">
+              <div class="spread-number">04</div>
+              <h3 class="spread-word">LOVING</h3>
+              <p class="spread-quote">“The kind of love that makes a house feel like home.”</p>
+              <p class="spread-caption">
+                An enduring refuge where we were always safe, always cherished, and continually reminded of our divine worth.
+              </p>
+            </div>
+            <div class="spread-visual reveal-fade stagger-2">
+              <div class="spread-halo" aria-hidden="true"></div>
+              <div class="image-editorial-frame spread-image-wrapper">
+                <img
+                  src="assets/images/seated-radiant.jpg"
+                  alt="Victoria seated radiantly smiling in royal gown"
+                  loading="lazy"
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 4: FINE WINE
+         ===================================================================== -->
+    <section id="fine-wine" class="section-container wine-section" aria-labelledby="wine-title">
+      <div class="wine-ambient-glow" aria-hidden="true"></div>
+      <div class="wine-container content-narrow">
+        <div class="wine-header">
+          <span class="editorial-eyebrow reveal-fade">Act III — Timelessness</span>
+          <h2 id="wine-title" class="wine-title reveal-fade stagger-1">FINE WINE</h2>
+          <p class="wine-subtitle reveal-fade stagger-2">“Some things only get better with time.”</p>
+        </div>
+
+        <div class="wine-portrait-wrap image-editorial-frame reveal-fade stagger-2">
+          <img
+            src="assets/images/fine-wine-seated.jpg"
+            alt="Victoria seated gracefully embodying timeless elegance"
+            loading="lazy"
+          >
+        </div>
+
+        <div class="wine-footer-lines reveal-fade stagger-3">
+          <p class="wine-footer-main">Aged beautifully. Loved endlessly.</p>
+          <p class="wine-footer-note">Elegance • Maturity • Confidence • Timeless Grace</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 5: THE LITTLE MOMENTS (DOCUMENTARY WALL)
+         ===================================================================== -->
+    <section id="little-moments" class="section-container moments-section" aria-labelledby="moments-title">
+      <div class="content-wrapper">
+        <div class="moments-header">
+          <span class="editorial-eyebrow reveal-fade">Act IV — The Spirit</span>
+          <h2 id="moments-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">THE LITTLE MOMENTS</h2>
+          <p class="editorial-quote reveal-fade stagger-2" style="margin-top: 1.25rem;">
+            “She isn’t only someone to admire. She is someone who laughs, dances, celebrates, smiles and lives.”
+          </p>
+        </div>
+
+        <div class="moments-wall" role="region" aria-label="Memories wall">
+          <!-- Video 1: Joyful Dance -->
+          <article class="moment-card span-tall" data-type="video" data-src="assets/videos/video-dance-joy.mp4" data-caption="Victoria dancing with pure spontaneous joy">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge"><span class="video-pulse-dot"></span> Film</span>
+              <video
+                src="assets/videos/video-dance-joy.mp4"
+                poster="assets/posters/video-dance-joy.jpg"
+                playsinline
+                muted
+                loop
+                preload="metadata"
+                aria-label="Victoria dancing with pure joy"
+              ></video>
+              <div class="moment-overlay">
+                <h3 class="moment-title">Dance of Joy</h3>
+                <span class="moment-hint">Click to watch &amp; hear</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Photo 1: Floor Laugh -->
+          <article class="moment-card" data-type="image" data-src="assets/images/floor-laugh.jpg" data-caption="Unfiltered laughter and candid joy">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge">Memory</span>
+              <img
+                src="assets/images/floor-laugh.jpg"
+                alt="Victoria laughing heartily on the floor"
+                loading="lazy"
+              >
+              <div class="moment-overlay">
+                <h3 class="moment-title">Unfiltered Laughter</h3>
+                <span class="moment-hint">Click to expand</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video 2: Banquet Smile -->
+          <article class="moment-card" data-type="video" data-src="assets/videos/video-banquet-smile.mp4" data-caption="A radiant banquet smile lighting up the room">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge"><span class="video-pulse-dot"></span> Film</span>
+              <video
+                src="assets/videos/video-banquet-smile.mp4"
+                poster="assets/posters/video-banquet-smile.jpg"
+                playsinline
+                muted
+                loop
+                preload="metadata"
+                aria-label="Victoria smiling at a celebratory banquet"
+              ></video>
+              <div class="moment-overlay">
+                <h3 class="moment-title">Banquet Glow</h3>
+                <span class="moment-hint">Click to watch &amp; hear</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Photo 2: Suit Standing -->
+          <article class="moment-card" data-type="image" data-src="assets/images/suit-standing.jpg" data-caption="Executive elegance and poised sophistication">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge">Memory</span>
+              <img
+                src="assets/images/suit-standing.jpg"
+                alt="Victoria in elegant business suit standing confidently"
+                loading="lazy"
+              >
+              <div class="moment-overlay">
+                <h3 class="moment-title">Executive Poise</h3>
+                <span class="moment-hint">Click to expand</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video 3: Gala Kiss -->
+          <article class="moment-card span-2" data-type="video" data-src="assets/videos/video-gala-kiss.mp4" data-caption="Warm gala celebration sharing love and kisses">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge"><span class="video-pulse-dot"></span> Film</span>
+              <video
+                src="assets/videos/video-gala-kiss.mp4"
+                poster="assets/posters/video-gala-kiss.jpg"
+                playsinline
+                muted
+                loop
+                preload="metadata"
+                aria-label="Victoria blowing a kiss at a gala"
+              ></video>
+              <div class="moment-overlay">
+                <h3 class="moment-title">Gala Warmth</h3>
+                <span class="moment-hint">Click to watch &amp; hear</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Photo 3: Silhouette Monochrome -->
+          <article class="moment-card" data-type="image" data-src="assets/images/silhouette-monochrome.jpg" data-caption="Monochrome stillness and timeless beauty">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge">Memory</span>
+              <img
+                src="assets/images/silhouette-monochrome.jpg"
+                alt="Victoria in monochrome architectural profile"
+                loading="lazy"
+              >
+              <div class="moment-overlay">
+                <h3 class="moment-title">Quiet Stillness</h3>
+                <span class="moment-hint">Click to expand</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Video 4: Concert Cheer -->
+          <article class="moment-card span-2" data-type="video" data-src="assets/videos/video-concert-cheer.mp4" data-caption="Cheering with passion and boundless energy">
+            <div class="moment-media-wrapper">
+              <span class="moment-badge"><span class="video-pulse-dot"></span> Film</span>
+              <video
+                src="assets/videos/video-concert-cheer.mp4"
+                poster="assets/posters/video-concert-cheer.jpg"
+                playsinline
+                muted
+                loop
+                preload="metadata"
+                aria-label="Victoria cheering excitedly in a live celebration"
+              ></video>
+              <div class="moment-overlay">
+                <h3 class="moment-title">Living Fully</h3>
+                <span class="moment-hint">Click to watch &amp; hear</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 6: THANK YOU (REFLECTIVE GRATITUDE)
+         ===================================================================== -->
+    <section id="thank-you" class="thank-you-section" aria-labelledby="thank-you-title">
+      <img
+        src="assets/images/silhouette-monochrome.jpg"
+        alt=""
+        class="thank-you-bg-image"
+        loading="lazy"
+        aria-hidden="true"
+      >
+      <div class="thank-you-container">
+        <span class="editorial-eyebrow reveal-fade">Act V — Devotion</span>
+        <h2 id="thank-you-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">THANK YOU</h2>
+
+        <div class="thank-you-lines">
+          <p class="thank-line reveal-fade stagger-1">Thank you for every prayer.</p>
+          <p class="thank-line reveal-fade stagger-2">Every sacrifice.</p>
+          <p class="thank-line reveal-fade stagger-2">Every sleepless night.</p>
+          <p class="thank-line reveal-fade stagger-3">Every time you put us before yourself.</p>
+          <p class="thank-line highlight reveal-fade stagger-3">Every time you gave even when you had little left to give.</p>
+        </div>
+
+        <p class="thank-you-climax reveal-fade stagger-4">
+          “So much of who I am, and who I continue to strive to become, is because of you.”
+        </p>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 7: MILES APART (DYNAMIC 3D GLOBE / FALLBACK)
+         ===================================================================== -->
+    <section id="miles-apart" class="section-container miles-section" aria-labelledby="miles-title">
+      <div class="content-wrapper">
+        <div class="miles-header">
+          <span class="editorial-eyebrow reveal-fade">Act VI — Across The Ocean</span>
+          <h2 id="miles-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">MILES APART</h2>
+          <p class="editorial-prose reveal-fade stagger-2" style="margin-top: 1rem;">
+            Even though you're miles away...
+          </p>
+        </div>
+
+        <div class="miles-locations reveal-fade stagger-2">
+          <div class="location-box">
+            <span class="location-flag" aria-label="Nigeria flag">🇳🇬</span>
+            <span class="location-country">NIGERIA</span>
+            <span class="location-coords">Gloria</span>
+          </div>
+
+          <div class="location-connector" aria-hidden="true">
+            <div class="connector-line">
+              <span class="connector-dot"></span>
+            </div>
+            <span class="connector-sub">The Golden Arc</span>
+          </div>
+
+          <div class="location-box">
+            <span class="location-flag" aria-label="USA flag">🇺🇸</span>
+            <span class="location-country">USA</span>
+            <span class="location-coords">Victoria (38.0° N, -97.0° W)</span>
+          </div>
+        </div>
+
+        <!-- Globe Viewport -->
+        <div class="globe-viewport reveal-fade stagger-3" id="globe-viewport">
+          <!-- 3D WebGL Canvas will be injected here when Three.js is loaded -->
+          <div id="globe-canvas-container"></div>
+
+          <!-- Dynamic 3D Tracking Pin Labels -->
+          <div id="globe-label-nigeria" class="globe-marker-label" aria-hidden="true">
+            <span class="marker-title">🇳🇬 NIGERIA</span>
+            <span class="marker-sub">Gloria</span>
+          </div>
+          <div id="globe-label-usa" class="globe-marker-label" aria-hidden="true">
+            <span class="marker-title">🇺🇸 USA</span>
+            <span class="marker-sub">Victoria</span>
+          </div>
+
+          <!-- Subtle Drag Prompt -->
+          <div class="globe-drag-hint" id="globe-drag-hint" aria-hidden="true">
+            <span>Drag to explore globe ✦</span>
+          </div>
+
+          <!-- High-performance SVG Fallback (visible prior to load or on reduced-motion) -->
+          <div class="globe-svg-fallback" id="globe-fallback" aria-label="Illustration of globe with golden arc from Nigeria to USA">
+            <svg viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="sphereGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#141926" />
+                  <stop offset="70%" stop-color="#080a10" />
+                  <stop offset="100%" stop-color="#030406" />
+                </radialGradient>
+                <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#c5a059" stop-opacity="0.2" />
+                  <stop offset="50%" stop-color="#f5d68b" stop-opacity="1" />
+                  <stop offset="100%" stop-color="#c5a059" stop-opacity="0.2" />
+                </linearGradient>
+                <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              <!-- Earth Sphere -->
+              <circle cx="300" cy="190" r="160" fill="url(#sphereGrad)" stroke="rgba(197, 160, 89, 0.25)" stroke-width="1.5" />
+              <!-- Subtle latitude / longitude rings -->
+              <ellipse cx="300" cy="190" rx="160" ry="60" stroke="rgba(247, 244, 238, 0.05)" stroke-width="1" fill="none" />
+              <ellipse cx="300" cy="190" rx="160" ry="120" stroke="rgba(247, 244, 238, 0.05)" stroke-width="1" fill="none" />
+              <ellipse cx="300" cy="190" rx="65" ry="160" stroke="rgba(247, 244, 238, 0.05)" stroke-width="1" fill="none" />
+              
+              <!-- Nigeria node (approx right-center on Atlantic hemisphere) -->
+              <circle cx="360" cy="205" r="7" fill="#c5a059" filter="url(#goldGlow)" />
+              <circle cx="360" cy="205" r="16" stroke="#c5a059" stroke-width="1" opacity="0.5">
+                <animate attributeName="r" values="7;22" dur="2.4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.8;0" dur="2.4s" repeatCount="indefinite" />
+              </circle>
+              <text x="375" y="210" fill="#f7f4ee" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" letter-spacing="1">NIGERIA</text>
+
+              <!-- USA node (approx left-center on Atlantic hemisphere) -->
+              <circle cx="210" cy="140" r="7" fill="#c5a059" filter="url(#goldGlow)" />
+              <circle cx="210" cy="140" r="16" stroke="#c5a059" stroke-width="1" opacity="0.5">
+                <animate attributeName="r" values="7;22" dur="2.4s" begin="1.2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.8;0" dur="2.4s" begin="1.2s" repeatCount="indefinite" />
+              </circle>
+              <text x="160" y="145" fill="#f7f4ee" font-family="'Plus Jakarta Sans', sans-serif" font-size="11" letter-spacing="1">USA</text>
+
+              <!-- Golden transatlantic arched beam -->
+              <path d="M 360 205 Q 275 80 210 140" fill="none" stroke="url(#arcGrad)" stroke-width="2.5" stroke-dasharray="8 4">
+                <animate attributeName="stroke-dashoffset" values="48;0" dur="2s" repeatCount="indefinite" />
+              </path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="globe-quote-wrap reveal-fade stagger-4">
+          <p class="globe-quote">“Distance changes geography, not love.”</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 8: THE PRAYER
+         ===================================================================== -->
+    <section id="prayer" class="section-container prayer-section" aria-labelledby="prayer-title">
+      <div class="content-wrapper">
+        <div class="prayer-grid">
+          <div class="prayer-visual reveal-fade">
+            <div class="prayer-halo" aria-hidden="true"></div>
+            <div class="prayer-arch-frame">
+              <img
+                src="assets/images/gown-standing.jpg"
+                alt="Victoria in elegant cathedral arched portrait"
+                loading="lazy"
+              >
+            </div>
+          </div>
+
+          <div class="prayer-content">
+            <span class="editorial-eyebrow reveal-fade">Act VII — Blessings</span>
+            <h2 id="prayer-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">THE PRAYER</h2>
+            
+            <div class="prayer-box">
+              <div class="prayer-card reveal-fade stagger-2">
+                <p class="prayer-text">
+                  “I pray that God blesses us with the necessary resources to give you the finest things in life, because you deserve every beautiful thing this world has to offer.”
+                </p>
+              </div>
+
+              <div class="prayer-card reveal-fade stagger-3">
+                <p class="prayer-text">
+                  “After everything you have done for us, I pray that life gives you countless reasons to smile, and that we get to love, honour, and celebrate you for many, many more years.”
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ACT 9: THE LETTER (THE EMOTIONAL CLIMAX)
+         ===================================================================== -->
+    <section id="letter" class="section-container letter-section" aria-labelledby="letter-title">
+      <div class="content-wrapper">
+        <div class="letter-intro">
+          <span class="editorial-eyebrow reveal-fade">Act VIII — The Heart</span>
+          <h2 id="letter-title" class="editorial-title editorial-title-lg reveal-fade stagger-1">A LETTER TO MY MOTHER</h2>
+          <p class="editorial-prose reveal-fade stagger-2" style="margin-top: 1rem;">
+            A sealed message sealed with love and waiting for you.
+          </p>
+        </div>
+
+        <!-- 3D Tactile Envelope Stage -->
+        <div class="envelope-stage reveal-fade stagger-2" id="envelope-trigger" role="button" tabindex="0" aria-label="Open the sealed birthday letter">
+          <div class="envelope-wrapper">
+            <div class="envelope-body">
+              <div class="envelope-texture" aria-hidden="true"></div>
+              <div class="envelope-stamp-corner">SEPT 8</div>
+              <h3 class="envelope-recipient">For Victoria</h3>
+              <span class="envelope-sender">from your daughter, Gloria</span>
+              <div class="envelope-click-hint">
+                <span>Tap wax seal to open</span>
+                <span>✨</span>
+              </div>
+            </div>
+            <!-- Wax Seal Monogram -->
+            <div class="wax-seal" id="wax-seal" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         EXPANDED LETTER READER MODAL
+         ===================================================================== -->
+    <div class="letter-modal-backdrop" id="letter-modal" role="dialog" aria-modal="true" aria-labelledby="letter-modal-heading">
+      <div class="letter-sheet">
+        <button type="button" class="letter-close-btn" id="letter-close-btn" aria-label="Close letter">
+          <span>Close</span> ✕
+        </button>
+
+        <header class="letter-header">
+          <div class="letter-seal-emblem" aria-hidden="true">❦</div>
+          <div class="letter-date">September • For Victoria • From Your Daughter, Gloria</div>
+        </header>
+
+        <article class="letter-body">
+          <p class="letter-lead">
+            My love for the 9th month of the year knows no bounds because a queen was born.
+          </p>
+
+          <p class="letter-lead">
+            It’s another trip around the sun, another year to celebrate the beautiful woman you are, and another opportunity for me to thank God for the gift of you.
+          </p>
+
+          <h3 id="letter-modal-heading" class="letter-salutation">Dearest Mom,</h3>
+
+          <p>
+            Every day, I pray and thank the Lord for your heart, your life, and the privilege of calling you my mother. Honestly, I don’t know what I would do without you.
+          </p>
+
+          <p>
+            You are one of the greatest blessings God has given me, and I will never take the gift of having you for granted.
+          </p>
+
+          <p>
+            You are selfless, kind, gracious, and full of so much love. Watching you grow older like fine wine has been one of my greatest joys. Every year, I look at you and feel nothing but gratitude that I get to call you my mother.
+          </p>
+
+          <p>
+            Thank you, Mom, for every prayer, every sacrifice, every sleepless night, every time you put us before yourself, and every time you gave even when you had little left to give.
+          </p>
+
+          <p>
+            Thank you for being our safe place, our biggest cheerleader, and the woman who never stopped believing in us. So much of who I am, and who I continue to strive to become, is because of you.
+          </p>
+
+          <p>
+            Even though you’re miles away, I hope you know that distance could never make you feel any less close to my heart. I may not have enough pictures of us together, but I carry countless memories of you with me, and I hope we get to create so many more.
+          </p>
+
+          <p>
+            I pray that God blesses us with the necessary resources to give you the finest things in life, because you deserve every beautiful thing this world has to offer.
+          </p>
+
+          <p>
+            After everything you have done for us, I pray that life gives you countless reasons to smile, and that we get to love, honour, and celebrate you for many, many more years.
+          </p>
+
+          <p>
+            On this day and always, I just want you to know that I love you more than words could ever fully express. I am so incredibly proud to be your daughter, Gloria, and even more grateful that God chose you to be my mother.
+          </p>
+
+          <div class="letter-signoff">
+            <p class="letter-signoff-line">Happy Birthday, Mom.</p>
+            <p class="letter-signoff-line" style="margin-top: 0.5rem; font-style: italic; color: var(--gold-primary);">With all my love, Gloria</p>
+            <p class="letter-signoff-art">God’s finest art. 💕</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         ACT 10: THE FINALE
+         ===================================================================== -->
+    <section id="finale" class="finale-section" aria-labelledby="finale-title">
+      <div class="finale-bg-container">
+        <img
+          src="assets/images/intimate-portrait.jpg"
+          alt="Victoria smiling intimately in timeless close-up portrait"
+          class="finale-image"
+          loading="lazy"
+        >
+        <div class="finale-vignette" aria-hidden="true"></div>
+      </div>
+
+      <div class="finale-content">
+        <h2 id="finale-title" class="finale-title reveal-fade">HAPPY BIRTHDAY, VICTORIA.</h2>
+        <p class="finale-art reveal-fade stagger-1">God’s finest art.</p>
+        <p class="finale-closing reveal-fade stagger-2">Loved across every mile between us. ❤️</p>
+        
+        <div class="finale-actions reveal-fade stagger-3">
+          <button type="button" class="finale-btn finale-btn-gold" id="btn-read-again">Read The Letter Again</button>
+          <button type="button" class="finale-btn finale-btn-outline" id="btn-replay">Begin From The Dawn ↑</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       MEDIA LIGHTBOX MODAL
+       ===================================================================== -->
+  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Media preview">
+    <div class="lightbox-content-box">
+      <button type="button" class="lightbox-close-btn" id="lightbox-close-btn" aria-label="Close media preview">
+        <span>Close</span> ✕
+      </button>
+      <div class="lightbox-media-container" id="lightbox-media-container"></div>
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+  </div>
+
+  <!-- Vanilla JavaScript Application -->
+  <script src="script.js"></script>
+</body>
+</html>
